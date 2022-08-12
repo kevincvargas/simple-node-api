@@ -3,6 +3,6 @@ import { userRoutes } from './user.route'
 
 const router = express()
 
-router.use(userRoutes)
+router.use('/users', userRoutes)
 
 export { router }

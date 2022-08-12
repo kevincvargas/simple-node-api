@@ -1,27 +1,24 @@
 import express from 'express'
 import { UserController } from '../controllers/user.controller'
 
+let controller: UserController
+let userRoutes = express()
 
-const userRoutes = express()
-userRoutes.post('/users', async (request, response) => {
-  const userController = new UserController()
-  const user = await userController.create(request, response)
-
-  return user
+userRoutes.use(async (request, response, next) => {  
+  controller = new UserController()
+  next()
 })
 
-userRoutes.get('/users', async (request, response) => {
-  const userController = new UserController()
-  const user = await userController.get(request, response)
-
-  return user
+userRoutes.post('/', async (request, response) => {  
+  return controller.create(request, response)  
 })
 
-userRoutes.get('/users/:id', async (request, response) => {
-  const userController = new UserController()
-  const user = await userController.find(request.params.id, request, response)
+userRoutes.get('/', async (request, response) => {  
+  return controller.get(request, response)  
+})
 
-  return user
+userRoutes.get('/:id', async (request, response) => {  
+  return controller.find(request.params.id, request, response)
 })
 
 export { userRoutes }
